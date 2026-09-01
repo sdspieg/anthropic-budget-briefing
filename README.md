@@ -1,6 +1,6 @@
 # Anthropic congressional-intelligence briefing
 
-This repository publishes the standalone HTML briefing for the 2026 StratBase Anthropic proposal. The briefing combines a measured thirty-fiscal-year US defense-budget corpus, a completed structural extraction, a staffer-facing 498-taxon issue framework, and public-record intelligence on Richard Fontaine and Anthropic's Long-Term Benefit Trust.
+This repository publishes the standalone HTML briefing for the 2026 StratBase Anthropic proposal. The briefing combines a measured thirty-fiscal-year US defense-budget corpus, a completed structural extraction, a staffer-facing 498-taxon issue framework, and public-record intelligence on Mike Kuiken. Kuiken is verified as a member of Anthropic's National Security and Public Sector Advisory Council; the deck explicitly separates that advisory role from Anthropic's Long-Term Benefit Trust and corporate board.
 
 ## Live site
 
