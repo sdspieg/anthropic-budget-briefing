@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>From Budget Books to Congressional Questions</title>
+<style>
+:root{--navy:#07172d;--navy2:#0e2948;--blue:#4f9bd8;--ice:#b8d7ea;--gold:#e2b34b;--amber:#ef7d55;--white:#f4f7fa;--muted:#91a9bd;--green:#64c3a3;--red:#e06464}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020914;color:var(--white);font-family:Inter,"Segoe UI",Arial,sans-serif}
+body{display:grid;place-items:center}
+#stage{container-type:inline-size;position:relative;width:min(100vw,177.777vh);aspect-ratio:16/9;background:radial-gradient(circle at 77% 15%,#173e64 0,#0b203b 28%,var(--navy) 62%,#061326 100%);overflow:hidden;box-shadow:0 0 4cqw #000}
+#stage:after{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:3cqw 3cqw}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:4.4cqw 5.1cqw 3.5cqw;z-index:1}
+.slide.on{display:flex}
+.eyebrow{font-size:1.18cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:750;margin-bottom:.7cqw}
+h1,h2,h3,p{margin:0}
+h1{font-size:4.7cqw;line-height:.98;letter-spacing:-.045em;max-width:72cqw}
+h2{font-size:3.0cqw;line-height:1.05;letter-spacing:-.03em;margin-bottom:.75cqw}
+h3{font-size:1.55cqw;line-height:1.15}
+.dek{font-size:1.42cqw;line-height:1.35;color:var(--ice);max-width:70cqw;margin-top:1cqw}
+.small{font-size:1.12cqw;line-height:1.35;color:var(--muted)}
+.source{position:absolute;left:5.1cqw;bottom:1.45cqw;font-size:1.10cqw;color:#6f879b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:2.2cqw;min-height:0;flex:1;margin-top:1.6cqw}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw;min-height:0;flex:1;margin-top:1.5cqw}
+.panel{background:linear-gradient(145deg,rgba(17,49,82,.9),rgba(8,27,49,.9));border:1px solid rgba(184,215,234,.18);border-radius:1.2cqw;padding:1.45cqw;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.2)}
+.metric{font-size:3.6cqw;font-weight:850;line-height:1;color:var(--gold);letter-spacing:-.05em}
+.metric-label{font-size:1.18cqw;line-height:1.25;color:var(--ice);margin-top:.45cqw}
+.callout{border-left:.35cqw solid var(--gold);background:rgba(226,179,75,.09);padding:1cqw 1.2cqw;font-size:1.28cqw;line-height:1.35}
+.chart{width:100%;height:100%;display:block;overflow:visible}
+.chart text{fill:var(--ice);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:1.12cqw}
+.chart .axis{stroke:#57718a;stroke-width:1}
+.chart .grid{stroke:#31506d;stroke-width:1;opacity:.55}
+.chart .direct{fill:var(--blue)}
+.chart .extract{fill:var(--gold)}
+.chart .line{fill:none;stroke:var(--amber);stroke-width:4}
+.chart .dot{fill:var(--amber);stroke:var(--navy);stroke-width:3}
+.chart .label-strong{fill:var(--white);font-size:1.4cqw;font-weight:800}
+.chart .label-gold{fill:var(--gold);font-size:1.22cqw;font-weight:800}
+.topbar{position:absolute;left:0;right:0;top:0;height:.62cqw;background:linear-gradient(90deg,var(--gold) 0 14%,var(--blue) 14% 58%,var(--green) 58% 82%,var(--amber) 82%)}
+#progress{position:absolute;left:0;bottom:0;height:.45cqw;background:var(--gold);z-index:5;width:0}
+#chrome{position:absolute;right:2cqw;top:1.6cqw;z-index:5;display:flex;gap:.7cqw;align-items:center;color:var(--muted);font-size:1.1cqw}
+#sect{color:var(--gold);font-weight:750;text-transform:uppercase;letter-spacing:.1em}
+.pill{border:1px solid rgba(184,215,234,.28);border-radius:99px;padding:.35cqw .75cqw;background:rgba(3,14,27,.45)}
+[data-frag]{opacity:0;visibility:hidden;transition:none!important}
+[data-frag].shown{opacity:1;visibility:visible;transition:none!important}
+.frag-note{position:absolute;right:5.2cqw;bottom:4.7cqw;width:27cqw;background:rgba(4,17,31,.96);border:.18cqw solid var(--gold);border-radius:.9cqw;padding:1.1cqw 1.2cqw;font-size:1.18cqw;line-height:1.35;box-shadow:0 1cqw 2.4cqw rgba(0,0,0,.4)}
+.cover{justify-content:center}
+.cover h1{max-width:66cqw}
+.cover .dek{max-width:55cqw}
+.year-ribbon{position:absolute;left:5cqw;right:5cqw;bottom:5.4cqw;display:grid;grid-template-columns:repeat(30,1fr);gap:.22cqw;align-items:end}
+.year-ribbon span{display:block;background:var(--blue);height:1.2cqw;border-radius:.15cqw;opacity:.44}
+.year-ribbon span:nth-child(n+16):nth-child(-n+28){background:var(--gold);opacity:.72;height:2.1cqw}
+.year-ribbon span:first-child,.year-ribbon span:last-child{opacity:1;height:3cqw}
+.ribbon-label{position:absolute;bottom:3.55cqw;color:var(--ice);font-size:1.12cqw}.ribbon-label.a{left:5cqw}.ribbon-label.b{right:5cqw}
+.hero-number{position:absolute;right:6cqw;top:14cqw;width:20cqw;height:20cqw;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(226,179,75,.38);box-shadow:0 0 0 2cqw rgba(226,179,75,.04),0 0 0 4cqw rgba(79,155,216,.03)}
+.hero-number b{font-size:5.4cqw;color:var(--gold);line-height:.9}.hero-number span{font-size:1.15cqw;color:var(--ice);text-align:center}
+.denom-map{display:grid;grid-template-columns:1.15fr .7fr 1.15fr;gap:2cqw;align-items:center;flex:1;margin-top:1.5cqw}
+.denom-node{border-radius:50%;aspect-ratio:1;display:grid;place-items:center;text-align:center;border:.18cqw solid rgba(184,215,234,.3);background:radial-gradient(circle,rgba(30,78,119,.72),rgba(8,29,52,.96));padding:2cqw}
+.denom-node.gold{border-color:var(--gold);box-shadow:0 0 3cqw rgba(226,179,75,.14)}
+.denom-node strong{font-size:3.5cqw;color:var(--gold);line-height:1}.denom-node span{font-size:1.17cqw;color:var(--ice)}
+.split-stack{display:grid;gap:1cqw}.split-box{padding:1.1cqw;border-radius:.8cqw;background:rgba(79,155,216,.15);border:1px solid rgba(79,155,216,.45);font-size:1.15cqw}.split-box b{font-size:2.1cqw;color:var(--white)}
+.connector{font-size:2.5cqw;color:var(--gold);text-align:center}
+.chart-wrap{position:relative;flex:1;min-height:0;margin-top:.5cqw;padding:1cqw 1.1cqw 0;background:rgba(3,15,29,.34);border-radius:1cqw;border:1px solid rgba(184,215,234,.12)}
+.legend{display:flex;gap:1.4cqw;font-size:1.12cqw;color:var(--ice);margin-left:auto}.legend i{display:inline-block;width:.9cqw;height:.9cqw;border-radius:.18cqw;margin-right:.35cqw;vertical-align:-.05cqw}
+.headrow{display:flex;align-items:flex-end;gap:1cqw}
+.headrow .legend{margin-bottom:.7cqw}
+.family-layout{display:grid;grid-template-columns:1.55fr .7fr;gap:1.8cqw;flex:1;min-height:0;margin-top:1cqw}
+.family-list{display:grid;grid-template-columns:1fr 1fr;gap:.55cqw 1.2cqw;align-content:start}
+.family-item{position:relative;background:rgba(12,38,64,.72);border-radius:.65cqw;padding:.7cqw .85cqw;overflow:hidden;min-height:3.2cqw}
+.family-item:before{content:"";position:absolute;left:0;bottom:0;height:.25cqw;width:var(--w);background:var(--c)}
+.family-item b{font-size:1.55cqw;color:var(--white)}.family-item span{display:block;font-size:1.1cqw;color:var(--muted);margin-top:.18cqw}
+.confidence{display:grid;gap:.9cqw}.conf-row{display:grid;grid-template-columns:6.5cqw 1fr 4.5cqw;gap:.7cqw;align-items:center;font-size:1.12cqw}.conf-track{height:1.15cqw;background:#0a1d33;border-radius:99px;overflow:hidden}.conf-fill{height:100%;background:var(--gold);border-radius:inherit}.conf-row:nth-child(2) .conf-fill{background:var(--blue)}.conf-row:nth-child(3) .conf-fill{background:var(--green)}
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:.8cqw;align-items:stretch;margin-top:2.1cqw;flex:1}
+.pipe-step{position:relative;padding:1.2cqw .9cqw;border-radius:1cqw;background:linear-gradient(160deg,#153a61,#0a233e);border:1px solid rgba(184,215,234,.18);text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:14cqw}
+.pipe-step:after{content:"›";position:absolute;right:-.76cqw;top:43%;font-size:2.2cqw;color:var(--gold);z-index:2}.pipe-step:last-child:after{display:none}
+.pipe-step .num{font-size:3.0cqw;color:var(--gold);font-weight:850}.pipe-step b{font-size:1.35cqw}.pipe-step span{font-size:1.10cqw;color:var(--muted);line-height:1.25;margin-top:.5cqw}
+.resolved{display:grid;grid-template-columns:1fr 1fr;gap:1cqw;margin-top:1.1cqw}.resolved div{font-size:1.12cqw;padding:.75cqw 1cqw;background:rgba(100,195,163,.09);border-left:.25cqw solid var(--green)}
+.metadata-layout{display:grid;grid-template-columns:.86fr 1.18fr 1.18fr;gap:1.1cqw;flex:1;min-height:0;margin-top:1.1cqw}.metadata-col{display:flex;flex-direction:column;gap:.8cqw;min-height:0}.meta-stat{flex:1;border-radius:1cqw;padding:1cqw 1.15cqw;background:linear-gradient(145deg,rgba(21,58,97,.92),rgba(8,28,50,.95));border:1px solid rgba(184,215,234,.17);display:flex;flex-direction:column;justify-content:center}.meta-stat b{font-size:2.65cqw;line-height:.95;color:var(--gold)}.meta-stat span{font-size:1.10cqw;line-height:1.24;color:var(--ice);margin-top:.45cqw}.coverage-list,.signal-list{display:grid;gap:.58cqw}.coverage-row,.signal-row{display:grid;grid-template-columns:8.5cqw 1fr 3.5cqw;align-items:center;gap:.55cqw;font-size:1.10cqw}.coverage-track,.signal-track{height:.88cqw;border-radius:99px;background:#071a30;overflow:hidden}.coverage-fill,.signal-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--blue),var(--green))}.signal-fill{background:linear-gradient(90deg,var(--gold),var(--amber))}.meta-panel{flex:1;padding:1.05cqw 1.15cqw;border-radius:1cqw;background:rgba(8,29,52,.8);border:1px solid rgba(184,215,234,.15)}.meta-panel h3{margin-bottom:.8cqw}.signal-row{grid-template-columns:9.3cqw 1fr 3cqw}.metadata-strip{display:flex;gap:.55cqw;flex-wrap:wrap;margin-top:.55cqw}.metadata-chip{font-size:1.10cqw;padding:.38cqw .65cqw;border:1px solid rgba(100,195,163,.5);background:rgba(100,195,163,.09);border-radius:99px;color:var(--ice)}.metadata-chip b{color:var(--white)}
+.archive-viz{display:grid;grid-template-columns:.8fr 1.2fr .8fr;align-items:center;gap:1.4cqw;flex:1;margin-top:1cqw}
+.archive-stack{position:relative;height:19cqw}.archive-card{position:absolute;width:17cqw;height:10.5cqw;border-radius:1cqw;background:#173b61;border:.18cqw solid var(--gold);display:grid;place-items:center;text-align:center;box-shadow:0 .8cqw 2cqw rgba(0,0,0,.35)}.archive-card:nth-child(1){left:0;top:4cqw;transform:rotate(-6deg)}.archive-card:nth-child(2){left:1.8cqw;top:2cqw;transform:rotate(1deg)}.archive-card:nth-child(3){left:3.2cqw;top:0;transform:rotate(5deg)}.archive-card b{font-size:3cqw;color:var(--gold)}.archive-card span{font-size:1.12cqw}
+.nested{height:20cqw;position:relative}.nested .box{position:absolute;border:.18cqw solid;border-radius:1cqw;display:grid;place-items:center;text-align:center}.nested .a{inset:0;border-color:var(--blue);background:rgba(79,155,216,.08);place-items:start;padding:.75cqw}.nested .b{inset:3cqw;border-color:var(--gold);background:rgba(226,179,75,.08);place-items:start;padding:.75cqw}.nested .c{inset:6cqw;border-color:var(--green);background:rgba(100,195,163,.08)}.nested b{font-size:1.4cqw}.nested span{font-size:1.1cqw;color:var(--ice)}
+.sheet-cloud{display:grid;grid-template-columns:repeat(5,1fr);gap:.5cqw}.sheet-cloud i{height:2.8cqw;border-radius:.35cqw;background:linear-gradient(150deg,#d8eef8,#80bad7);box-shadow:inset 0 -.4cqw #4e8bb0}.sheet-cloud i:nth-child(3n){background:linear-gradient(150deg,#ffe7aa,#d6a841)}
+.staffer-layout{display:grid;grid-template-columns:1.12fr .88fr;gap:1.2cqw;flex:1;min-height:0;margin-top:.65cqw}.meat-list{display:grid;grid-template-columns:1fr 1fr;gap:.65cqw;align-content:center}.meat-card{padding:.72cqw .82cqw;border-radius:.75cqw;background:rgba(14,42,72,.78);border-left:.25cqw solid var(--gold);font-size:1.10cqw;line-height:1.23;color:var(--ice)}.meat-card b{display:block;color:var(--white);font-size:1.18cqw;margin-bottom:.2cqw}.meat-card:nth-child(2n){border-left-color:var(--green)}
+.dup-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:1.5cqw;flex:1;min-height:0;margin-top:1cqw}.dup-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:.65cqw;align-content:center}.dup-pair{border-radius:.7cqw;background:rgba(79,155,216,.12);padding:.65cqw .45cqw;text-align:center;border:1px solid rgba(79,155,216,.25)}.dup-pair b{font-size:1.25cqw;color:var(--gold)}.dup-pair span{font-size:1.1cqw;color:var(--ice)}.dup-pair.anomaly{border-color:var(--red);background:rgba(224,100,100,.1)}
+.ask{display:grid;grid-template-columns:1fr 1fr;gap:2.2cqw;flex:1;align-items:center;margin-top:1cqw}.ask-card{height:26cqw;border-radius:1.5cqw;padding:2cqw;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}.ask-card.money{background:linear-gradient(145deg,#173b61,#0a213b);border:.18cqw solid var(--blue)}.ask-card.tokens{background:linear-gradient(145deg,#4a3915,#1d291f);border:.18cqw solid var(--gold)}.ask-card .symbol{font-size:6cqw;line-height:1;color:var(--gold)}.ask-card h3{font-size:2.3cqw;margin:.7cqw 0}.ask-card p{font-size:1.25cqw;line-height:1.35;color:var(--ice)}
+.boundary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1cqw;margin-top:1.3cqw;flex:1}.boundary{padding:1.25cqw;border-radius:.9cqw;background:rgba(14,42,72,.72);border-left:.3cqw solid var(--amber)}.boundary b{font-size:1.42cqw}.boundary p{font-size:1.14cqw;line-height:1.35;color:var(--ice);margin-top:.35cqw}
+@media(max-aspect-ratio:16/9){#stage{width:100vw;height:56.25vw}}
+</style>
+</head>
+<body>
+<main id="stage">
+  <div class="topbar"></div>
+  <div id="chrome"><span id="sect"></span><span class="pill" id="counter"></span></div>
+  <div id="progress"></div>
+
+  <section class="slide cover" data-sid="cover" data-t="From budget books to congressional questions" data-section="Brief">
+    <div class="eyebrow">Anthropic opportunity briefing</div>
+    <h1>From budget books to congressional questions</h1>
+    <p class="dek">A thirty-year defense-budget corpus, a converged congressional-issue taxonomy, and a concrete frontier-model demonstration.</p>
+    <div class="hero-number"><div><b>30</b><br><span>fiscal years<br>FY1998&ndash;FY2027</span></div></div>
+    <div class="year-ribbon" aria-hidden="true"></div>
+    <span class="ribbon-label a">FY1998</span><span class="ribbon-label b">FY2027</span>
+    <div class="source">Measured from the live Drive corpus · 1 September 2026</div>
+  </section>
+
+  <section class="slide" data-sid="denominators" data-t="One corpus, four valid denominators" data-section="Corpus">
+    <div class="eyebrow">Measurement frame</div><h2>One corpus, four valid denominators</h2>
+    <p class="dek">The earlier 1,383 figure compressed different inclusion rules. The briefing keeps artifact topology and byte identity separate.</p>
+    <div class="denom-map">
+      <div class="denom-node gold"><div><strong data-metric="raw_files"></strong><br><span>eligible artifacts<br>PDF · XLS · XLSX · ZIP · JSON</span></div></div>
+      <div><div class="connector">=</div><div class="split-stack"><div class="split-box"><b data-metric="direct_files"></b><br>direct annual artifacts</div><div class="split-box"><b data-metric="extracted_files"></b><br>extracted Green Book tables</div></div></div>
+      <div class="denom-node"><div><strong data-metric="distinct_files"></strong><br><span>exact byte identities<br><b data-metric="duplicate_copies"></b> redundant copies removed</span></div></div>
+    </div>
+    <div class="source">Exact content identity: SHA-256 within repeated-size buckets; singleton sizes are exact singletons</div>
+  </section>
+
+  <section class="slide" data-sid="years" data-t="The archive layer reshapes the time series" data-section="Corpus">
+    <div class="headrow"><div><div class="eyebrow">N per fiscal year</div><h2>The archive layer reshapes the time series</h2></div><div class="legend"><span><i style="background:var(--blue)"></i>Direct artifacts</span><span><i style="background:var(--gold)"></i>Green Book tables</span></div></div>
+    <div class="chart-wrap"><svg id="yearChart" class="chart" viewBox="0 0 1200 520" role="img" aria-label="Annual artifact counts"></svg></div>
+    <div class="frag-note" data-frag="1"><b>FY2000 is sparse, not missing.</b><br>Eight direct PDFs form the real trough.</div>
+    <div class="frag-note" data-frag="2"><b>FY2013 is a topology break.</b><br>The first Green Book archive adds 57 historical tables.</div>
+    <div class="frag-note" data-frag="3"><b>FY2024 peaks at 111 files.</b><br>Fifty-eight are extracted tables, 53 are direct artifacts.</div>
+    <div class="source">Stacked counts derived from `document_catalog.tsv` · navigate right to reveal three analytical breaks</div>
+  </section>
+
+  <section class="slide" data-sid="formats" data-t="The machine-readable regime changes in FY2012" data-section="Corpus">
+    <div class="eyebrow">Format transition</div><h2>The machine-readable regime changes in FY2012</h2>
+    <p class="dek">Direct workbooks move cleanly from legacy XLS through FY2011 to XLSX from FY2012. Extracted Green Book tables create a second format layer after FY2013.</p>
+    <div class="chart-wrap"><svg id="formatChart" class="chart" viewBox="0 0 1200 520" role="img" aria-label="Direct PDF and workbook formats by fiscal year"></svg></div>
+    <div class="source">Direct artifacts only in the main chart; extracted Green Book workbooks are marked as a separate band</div>
+  </section>
+
+  <section class="slide" data-sid="families" data-t="The corpus has a stable appropriation spine" data-section="Categories">
+    <div class="eyebrow">Document families</div><h2>The corpus has a stable appropriation spine</h2>
+    <div class="family-layout"><div id="familyList" class="family-list"></div><div class="panel"><h3>Classification coverage</h3><p class="small" style="margin:.55cqw 0 1.2cqw">Every artifact now has a file-level family. Confidence says how it was obtained.</p><div id="confidence" class="confidence"></div><div class="callout" style="margin-top:1.35cqw"><b>568</b> artifacts carry an explicit P-1/R-1/O-1/M-1/C-1/RF-1/P-1R code.</div></div></div>
+    <div class="source">Filename and folder topology; the 498-taxon issue layer is a separate content-derived classification</div>
+  </section>
+
+  <section class="slide" data-sid="category-method" data-t="Best route to years and categories" data-section="Categories">
+    <div class="eyebrow">Metadata strategy</div><h2>Best route to years and all relevant categories</h2>
+    <p class="dek">Use deterministic structure first; spend content extraction only where it adds semantic resolution.</p>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="num">1</div><b>Fiscal year</b><span>FY folder + manifest year; filename is a cross-check, not the primary key.</span></div>
+      <div class="pipe-step"><div class="num">2</div><b>Collection role</b><span>Direct request · extracted Green Book table · archive · structured companion.</span></div>
+      <div class="pipe-step"><div class="num">3</div><b>Native family</b><span>Explicit series codes, then controlled title vocabulary and variants.</span></div>
+      <div class="pipe-step"><div class="num">4</div><b>Internal structure</b><span>PDF title/first pages; workbook sheet names and headings; page/sheet counts.</span></div>
+      <div class="pipe-step"><div class="num">5</div><b>Political issues</b><span>LLM-with-context classification against 7 HLTPs and 498 taxa.</span></div>
+    </div>
+    <div class="resolved"><div><b>SSJ resolved from content</b><br>Secretary&rsquo;s Summary Justification · 291 pages.</div><div><b>ECC resolved from content</b><br>Enhancing Combat Capability: Mitigating Climate Risk · 49 pages.</div></div>
+    <div class="source">Output: `document_catalog.tsv` · file-level family coverage 1,415 / 1,415 · issue coding not yet run</div>
+  </section>
+
+  <section class="slide" data-sid="metadata" data-t="Metadata routes us to the meat; it is not the product" data-section="Categories">
+    <div class="eyebrow">Routing layer · full corpus pass</div><h2>Metadata routes us to the meat; it is not the product</h2>
+    <p class="dek">Titles, pages, sheets and evidence signals identify where to read and how to stratify. They do not tell a staffer what matters.</p>
+    <div class="metadata-layout">
+      <div class="metadata-col">
+        <div class="meta-stat"><b id="metaParsed"></b><span>artifacts parsed<br><span id="metaParseNote"></span></span></div>
+        <div class="meta-stat"><b id="metaPages"></b><span>PDF pages measured</span></div>
+        <div class="meta-stat"><b id="metaSheets"></b><span>workbook sheets measured</span></div>
+      </div>
+      <div class="metadata-col"><div class="meta-panel"><h3>Field coverage</h3><div id="metadataCoverage" class="coverage-list"></div></div><div class="meta-panel"><h3>Accounting + price basis</h3><div id="metadataAccounting" class="metadata-strip"></div></div></div>
+      <div class="metadata-col"><div class="meta-panel"><h3>Most visible content signals</h3><div id="metadataTopics" class="signal-list"></div></div><div class="meta-panel"><h3>Service/component signals</h3><div id="metadataComponents" class="signal-list"></div></div></div>
+    </div>
+    <div class="source">Generated from `enriched_document_catalog.tsv` · evidence windows, not full-document semantic coding</div>
+  </section>
+
+  <section class="slide" data-sid="archives" data-t="Thirteen archives add 506 tables" data-section="Categories">
+    <div class="eyebrow">Green Book topology</div><h2>Thirteen archives add 506 historical tables</h2>
+    <p class="dek">These are a different analytical class from annual request books: they carry long-run budget authority, outlay, deflator, force-level and service tables.</p>
+    <div class="archive-viz"><div class="archive-stack"><div class="archive-card"><span>archive</span></div><div class="archive-card"><span>archive</span></div><div class="archive-card"><div><b>13</b><br><span>Green Book ZIPs</span></div></div></div><div class="nested"><div class="box a"><div><b>Archive layer</b></div></div><div class="box b"><div><b>Nested ZIP</b></div></div><div class="box c"><div><b>Recursive<br>extract</b></div></div></div><div><div class="metric">506</div><div class="metric-label">extracted workbooks</div><div class="sheet-cloud" aria-hidden="true"></div></div></div>
+    <div class="callout"><b>+55.7%</b> relative to the 909 direct artifacts. Treating ZIP count as document count would erase the historical baseline.</div>
+    <div class="source">Recursive extraction result; four fiscal years contained an additional nested archive layer</div>
+  </section>
+
+  <section class="slide" data-sid="duplicates" data-t="Seventeen filenames are redundant copies" data-section="Quality">
+    <div class="eyebrow">Identity audit</div><h2>Seventeen filenames are redundant copies</h2>
+    <p class="dek">Fifteen duplicate groups pair O-1 and RF-1; two anomalies pair M-1 with O-1. A filename is a label, not an identity claim.</p>
+    <div class="dup-grid"><div id="dupCards" class="dup-cards"></div><div class="panel" style="display:flex;flex-direction:column;justify-content:center"><div class="metric">17</div><div class="metric-label">duplicate copies removed by exact hashing</div><div class="callout" style="margin-top:1.3cqw"><b>Consequence</b><br>The workbook is the genuine RF-1 source wherever the RF-1 PDF is byte-identical to O-1.</div></div></div>
+    <div class="source">SHA-256 evidence stored in `meta.json`; all duplicate groups are within-year</div>
+  </section>
+
+  <section class="slide" data-sid="size" data-t="File count and analytical weight diverge" data-section="Quality">
+    <div class="eyebrow">Size distribution</div><h2>File count and analytical weight diverge</h2>
+    <p class="dek">FY2024 has the most artifacts; FY2027 occupies the most bytes. The archive years are numerous because tables are small, while modern overview books dominate storage.</p>
+    <div class="chart-wrap"><svg id="sizeChart" class="chart" viewBox="0 0 1200 520" role="img" aria-label="Annual file counts and stored megabytes"></svg></div>
+    <div class="source">Bars: MiB by fiscal year · line: file count · current folder total 1,180,846,308 bytes</div>
+  </section>
+
+  <section class="slide" data-sid="taxonomy" data-t="A 498-taxon lens is ready" data-section="Method">
+    <div class="eyebrow">Congressional issue taxonomy</div><h2>A 498-taxon lens is ready</h2>
+    <p class="dek">Seven orthogonal dimensions ask what legislators can raise about a government&rsquo;s proposed defense budget. The taxonomy is not the Comptroller&rsquo;s filing structure.</p>
+    <div class="grid2"><div class="chart-wrap"><svg id="taxChart" class="chart" viewBox="0 0 620 620" role="img" aria-label="Taxonomy dimensions"></svg></div><div class="panel" style="display:grid;grid-template-columns:1fr 1fr;gap:1cqw;align-content:center"><div><div class="metric">498</div><div class="metric-label">taxa</div></div><div><div class="metric">61</div><div class="metric-label">third-level elements</div></div><div><div class="metric">22</div><div class="metric-label">second-level elements</div></div><div><div class="metric">7</div><div class="metric-label">HLTP dimensions</div></div><div class="callout" style="grid-column:1/-1"><b>DUAL GO at round 9.</b><br>Sol and Fable approved byte-identical candidates after five rounds of sustained disagreement.</div></div></div>
+    <div class="source">Taxonomy SHA-256 `44b2cb719d87…` · not yet applied to a source document</div>
+  </section>
+
+  <section class="slide" data-sid="staffer-categories" data-t="The product is seven questions a staffer can act on" data-section="Method">
+    <div class="eyebrow">Staffer category surface</div><h2>The product is seven questions a staffer can act on</h2>
+    <p class="dek">The 498 taxa are not a browsing menu. They combine into an evidence-backed oversight finding with an available congressional lever.</p>
+    <div class="staffer-layout">
+      <svg class="chart" viewBox="0 0 690 510" role="img" aria-label="Seven staffer questions derived from the taxonomy">
+        <g stroke="#466984" stroke-width="3"><line x1="345" y1="255" x2="125" y2="74"/><line x1="345" y1="255" x2="346" y2="55"/><line x1="345" y1="255" x2="566" y2="74"/><line x1="345" y1="255" x2="612" y2="255"/><line x1="345" y1="255" x2="566" y2="436"/><line x1="345" y1="255" x2="346" y2="455"/><line x1="345" y1="255" x2="125" y2="436"/></g>
+        <circle cx="345" cy="255" r="88" fill="#3f3216" stroke="#e2b34b" stroke-width="4"/><text x="345" y="239" text-anchor="middle" class="label-strong">A staffer asks</text><text x="345" y="272" text-anchor="middle">What matters?</text><text x="345" y="301" text-anchor="middle" class="label-gold">What can I do?</text>
+        <g><rect x="26" y="20" width="198" height="92" rx="20" fill="#173b61" stroke="#4f9bd8" stroke-width="2"/><text x="125" y="54" text-anchor="middle" class="label-strong">What is wrong?</text><text x="125" y="84" text-anchor="middle" class="label-gold">107 concern taxa</text></g>
+        <g><rect x="247" y="8" width="198" height="92" rx="20" fill="#14392f" stroke="#64c3a3" stroke-width="2"/><text x="346" y="42" text-anchor="middle" class="label-strong">What is affected?</text><text x="346" y="72" text-anchor="middle" class="label-gold">97 object taxa</text></g>
+        <g><rect x="466" y="20" width="198" height="92" rx="20" fill="#173b61" stroke="#4f9bd8" stroke-width="2"/><text x="565" y="54" text-anchor="middle" class="label-strong">How wide is it?</text><text x="565" y="84" text-anchor="middle" class="label-gold">32 scale taxa</text></g>
+        <g><rect x="489" y="208" width="198" height="92" rx="20" fill="#3f3216" stroke="#e2b34b" stroke-width="2"/><text x="588" y="242" text-anchor="middle" class="label-strong">Who bears it?</text><text x="588" y="272" text-anchor="middle" class="label-gold">57 constituency taxa</text></g>
+        <g><rect x="466" y="398" width="198" height="92" rx="20" fill="#173b61" stroke="#4f9bd8" stroke-width="2"/><text x="565" y="432" text-anchor="middle" class="label-strong">What can Congress do?</text><text x="565" y="462" text-anchor="middle" class="label-gold">92 remedy taxa</text></g>
+        <g><rect x="247" y="410" width="198" height="92" rx="20" fill="#14392f" stroke="#64c3a3" stroke-width="2"/><text x="346" y="444" text-anchor="middle" class="label-strong">When does it bite?</text><text x="346" y="474" text-anchor="middle" class="label-gold">48 time taxa</text></g>
+        <g><rect x="26" y="398" width="198" height="92" rx="20" fill="#173b61" stroke="#4f9bd8" stroke-width="2"/><text x="125" y="432" text-anchor="middle" class="label-strong">What proves it?</text><text x="125" y="462" text-anchor="middle" class="label-gold">65 evidence taxa</text></g>
+      </svg>
+      <div class="meat-list">
+        <div class="meat-card"><b>Strategy-budget mismatch</b>Low-cost drones underfunded; deterrence rhetoric unsupported by munitions depth.</div>
+        <div class="meat-card"><b>Affordability</b>Unbudgeted delay costs; personnel growth outruns the topline.</div>
+        <div class="meat-card"><b>Execution risk</b>Schedule slippage; reprogramming churn; current-year plan no longer executable.</div>
+        <div class="meat-card"><b>Industrial base</b>Skilled-workforce shortages; supplier dependency; acquisition capacity.</div>
+        <div class="meat-card"><b>Propriety</b>Thin or contradictory justification; unresolved legal, ethics or audit exposure.</div>
+        <div class="meat-card"><b>Congressional levers</b>Add, cut or reallocate; fence funds; require certification, reports or audit.</div>
+        <div class="meat-card"><b>Evidence standard</b>Every claim links to request text, tables, audit, estimate or external evidence.</div>
+        <div class="meat-card"><b>Absence is a finding</b>Missing strategy link, unfunded risk or unaddressed constituency becomes visible.</div>
+      </div>
+    </div>
+    <div class="source">Agreed taxonomy: 7 dimensions · 22 second-level categories · 61 third-level categories · 498 taxa</div>
+  </section>
+
+  <section class="slide" data-sid="signal" data-t="Features, labels and comparative generation" data-section="Method">
+    <div class="eyebrow">Learning design</div><h2>Features, labels and comparative generation</h2>
+    <p class="dek">The budget corpus tells us what was proposed. Political records tell us what became salient. Comparative legislatures widen the issue vocabulary.</p>
+    <svg class="chart" viewBox="0 0 1200 480" role="img" aria-label="Three-source analytical design">
+      <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#e2b34b"/></marker></defs>
+      <rect x="55" y="95" width="280" height="230" rx="28" fill="#12385d" stroke="#4f9bd8" stroke-width="3"/><text x="195" y="145" text-anchor="middle" class="label-strong">Budget documents</text><text x="195" y="190" text-anchor="middle">features</text><text x="195" y="230" text-anchor="middle">program · amount · service</text><text x="195" y="265" text-anchor="middle">request · table · justification</text>
+      <rect x="460" y="45" width="280" height="160" rx="28" fill="#3f3216" stroke="#e2b34b" stroke-width="3"/><text x="600" y="95" text-anchor="middle" class="label-strong">Congress + news</text><text x="600" y="137" text-anchor="middle">political-relevance labels</text><text x="600" y="172" text-anchor="middle">questions · fights · outcomes</text>
+      <rect x="460" y="255" width="280" height="160" rx="28" fill="#16372f" stroke="#64c3a3" stroke-width="3"/><text x="600" y="305" text-anchor="middle" class="label-strong">ParlaMint</text><text x="600" y="347" text-anchor="middle">comparative generation</text><text x="600" y="382" text-anchor="middle">issues already raised abroad</text>
+      <line x1="335" y1="170" x2="455" y2="125" stroke="#e2b34b" stroke-width="5" marker-end="url(#arrow)"/><line x1="335" y1="250" x2="455" y2="330" stroke="#e2b34b" stroke-width="5" marker-end="url(#arrow)"/>
+      <rect x="865" y="118" width="280" height="220" rx="110" fill="#102b49" stroke="#f4f7fa" stroke-width="3"/><text x="1005" y="185" text-anchor="middle" class="label-strong">Issue classifier</text><text x="1005" y="230" text-anchor="middle">what became politically salient?</text><text x="1005" y="275" text-anchor="middle" class="label-gold">frontier-model reasoning</text>
+      <line x1="742" y1="125" x2="870" y2="190" stroke="#e2b34b" stroke-width="5" marker-end="url(#arrow)"/><line x1="742" y1="335" x2="870" y2="275" stroke="#e2b34b" stroke-width="5" marker-end="url(#arrow)"/>
+    </svg>
+    <div class="source">Congress/news = observed political signal · ParlaMint = generative comparative input, not US validation</div>
+  </section>
+
+  <section class="slide" data-sid="option-space" data-t="One evidence layer, six things we can build" data-section="Options">
+    <div class="eyebrow">What the enriched corpus unlocks</div><h2>One evidence layer, six things we can build</h2>
+    <p class="dek">The value is not another document search. It is a reusable bridge from what was requested to what later became politically consequential.</p>
+    <svg class="chart" viewBox="0 0 1200 500" role="img" aria-label="Six analytical products unlocked by the enriched corpus">
+      <defs><marker id="arrow-options" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#e2b34b"/></marker></defs>
+      <text x="40" y="24" class="label-gold">RESEARCH DISCOVERIES</text><text x="1160" y="24" text-anchor="end" class="label-gold">DECISION SUPPORT</text>
+      <g stroke="#6b8195" stroke-width="3" opacity=".72" marker-end="url(#arrow-options)">
+        <line x1="510" y1="185" x2="316" y2="92"/><line x1="500" y1="250" x2="316" y2="242"/><line x1="520" y1="312" x2="316" y2="392"/>
+        <line x1="690" y1="185" x2="884" y2="92"/><line x1="700" y1="250" x2="884" y2="242"/><line x1="680" y1="312" x2="884" y2="392"/>
+      </g>
+      <g>
+        <rect x="40" y="44" width="276" height="100" rx="22" fill="#3f3216" stroke="#e2b34b" stroke-width="3"/><text x="64" y="79" class="label-strong">Historical salience</text><text x="64" y="110">Which budget signals preceded</text><text x="64" y="134">later political fights?</text>
+        <rect x="40" y="194" width="276" height="100" rx="22" fill="#14392f" stroke="#64c3a3" stroke-width="3"/><text x="64" y="229" class="label-strong">Empty-space radar</text><text x="64" y="260">What nobody raised</text><text x="64" y="284">but the taxonomy says matters?</text>
+        <rect x="40" y="344" width="276" height="100" rx="22" fill="#282245" stroke="#8e7cc3" stroke-width="3"/><text x="64" y="379" class="label-strong">Comparative foresight</text><text x="64" y="410">Which allied debates may</text><text x="64" y="434">foreshadow a US issue?</text>
+      </g>
+      <g>
+        <rect x="884" y="44" width="276" height="100" rx="22" fill="#12385d" stroke="#4f9bd8" stroke-width="3"/><text x="908" y="79" class="label-strong">Staffer question engine</text><text x="908" y="110">Asked needs plus needs that</text><text x="908" y="134">staff cannot yet articulate</text>
+        <rect x="884" y="194" width="276" height="100" rx="22" fill="#4a291f" stroke="#ef7d55" stroke-width="3"/><text x="908" y="229" class="label-strong">Policy-change trace</text><text x="908" y="260">Budget claim → hearing →</text><text x="908" y="284">amendment → changed line</text>
+        <rect x="884" y="344" width="276" height="100" rx="22" fill="#43243b" stroke="#d86f9b" stroke-width="3"/><text x="908" y="379" class="label-strong">Reasoning benchmark</text><text x="908" y="410">Evidence-grounded reasoning over</text><text x="908" y="434">messy public-sector records</text>
+      </g>
+      <circle cx="600" cy="245" r="108" fill="#0d2b4a" stroke="#f4f7fa" stroke-width="4"/><circle cx="600" cy="245" r="91" fill="none" stroke="#e2b34b" stroke-width="2" stroke-dasharray="7 8"/>
+      <text x="600" y="215" text-anchor="middle" class="label-strong">ENRICHED CORPUS</text><text x="600" y="251" text-anchor="middle">documents · tables · years</text><text x="600" y="282" text-anchor="middle">evidence · taxonomy · outcomes</text>
+      <rect x="418" y="430" width="364" height="56" rx="28" fill="#1f1721" stroke="#e06464" stroke-width="3" stroke-dasharray="8 7"/><text x="600" y="454" text-anchor="middle" class="label-strong">OPTIONAL RECURRING BRIEF</text><text x="600" y="477" text-anchor="middle">daily · weekly · monthly = separate SLA and owner</text>
+      <line x1="600" y1="354" x2="600" y2="426" stroke="#e06464" stroke-width="3" stroke-dasharray="8 7"/>
+    </svg>
+    <div class="source">Grounded in the proposal notes · the recurring service is an operational commitment, not a free extension of the research demo</div>
+  </section>
+
+  <section class="slide" data-sid="contact" data-t="Richard Fontaine is the unusually well-matched contact" data-section="Contact">
+    <div class="eyebrow">Contact intelligence · identity confirmed by SDS</div><h2>Richard Fontaine is the unusually well-matched contact</h2>
+    <p class="dek">Anthropic governance access, Senate committee experience and a bipartisan national-security network converge in one person.</p>
+    <svg class="chart" viewBox="0 0 1200 500" role="img" aria-label="Richard Fontaine contact intelligence profile">
+      <defs><linearGradient id="intel-card" x1="0" x2="1"><stop stop-color="#173b61"/><stop offset="1" stop-color="#0b203b"/></linearGradient></defs>
+      <rect x="28" y="42" width="300" height="375" rx="30" fill="url(#intel-card)" stroke="#e2b34b" stroke-width="3"/>
+      <circle cx="178" cy="142" r="70" fill="#0a1c32" stroke="#b8d7ea" stroke-width="3"/><circle cx="178" cy="121" r="25" fill="#4f9bd8"/><path d="M116 194 Q178 143 240 194 L240 208 L116 208 Z" fill="#4f9bd8"/>
+      <text x="178" y="250" text-anchor="middle" class="label-strong">RICHARD FONTAINE</text><text x="178" y="284" text-anchor="middle">CEO · CNAS</text><text x="178" y="315" text-anchor="middle">Anthropic LTBT trustee</text><text x="178" y="346" text-anchor="middle">Public-sector council member</text>
+      <rect x="55" y="370" width="246" height="35" rx="17" fill="#16372f" stroke="#64c3a3" stroke-width="2"/><text x="178" y="393" text-anchor="middle" class="label-strong">IDENTITY CONFIRMED</text>
+
+      <text x="376" y="53" class="label-gold">WHY HE FITS</text>
+      <g>
+        <rect x="376" y="70" width="368" height="88" rx="18" fill="#12385d" stroke="#4f9bd8" stroke-width="2"/><text x="400" y="103" class="label-strong">Hill operating knowledge</text><text x="400" y="133">Senate Foreign Relations staff</text><text x="400" y="154">McCain adviser · SASC deputy staff director</text>
+        <rect x="376" y="177" width="368" height="88" rx="18" fill="#14392f" stroke="#64c3a3" stroke-width="2"/><text x="400" y="210" class="label-strong">National-security reach</text><text x="400" y="240">State · NSC · Defense Policy Board</text><text x="400" y="261">CNAS · Trilateral Commission</text>
+        <rect x="376" y="284" width="368" height="88" rx="18" fill="#3f3216" stroke="#e2b34b" stroke-width="2"/><text x="400" y="317" class="label-strong">Anthropic governance</text><text x="400" y="347">LTBT trustee + public-sector council</text><text x="400" y="368">Not a corporate board director</text>
+      </g>
+
+      <text x="790" y="53" class="label-gold">WHAT WE KNOW FROM THE RELATIONSHIP</text>
+      <g fill="#0f2c4c" stroke="#57718a" stroke-width="2">
+        <rect x="790" y="70" width="382" height="61" rx="16"/><rect x="790" y="143" width="382" height="61" rx="16"/><rect x="790" y="216" width="382" height="61" rx="16"/><rect x="790" y="289" width="382" height="61" rx="16"/>
+      </g>
+      <text x="812" y="98" class="label-strong">Georgia Tech connection</text><text x="812" y="121">Real; exact nature still unknown</text>
+      <text x="812" y="171" class="label-strong">Excited about the call</text><text x="812" y="194">Possible ≈USD 40K share of a larger grant</text>
+      <text x="812" y="244" class="label-strong">Can canvass serving staffers</text><text x="812" y="267">Can ask serving staff what they want</text>
+      <text x="812" y="317" class="label-strong">Recurring brief discussed</text><text x="812" y="340">Daily · weekly · monthly concept</text>
+
+      <rect x="790" y="372" width="382" height="82" rx="18" fill="#421f22" stroke="#e06464" stroke-width="3"/>
+      <text x="812" y="405" class="label-strong">NEXT INTELLIGENCE GAP</text><text x="812" y="431">Grant vehicle · authority · timing</text><text x="812" y="448">cash/tokens · demo or service</text>
+    </svg>
+    <div class="source">Public record: Anthropic + CNAS · private relationship facts: SDS/Adam account · institutional role corrected 1 September 2026</div>
+  </section>
+
+  <section class="slide" data-sid="trust" data-t="The Trust is an independent governance lever" data-section="Contact">
+    <div class="eyebrow">Anthropic governance · why Fontaine&rsquo;s seat matters</div><h2>The Trust is an independent governance lever</h2>
+    <p class="dek">The LTBT is designed to keep Anthropic&rsquo;s public-benefit mission influential when commercial and frontier-risk pressures collide.</p>
+    <svg class="chart" viewBox="0 0 1200 500" role="img" aria-label="Long-Term Benefit Trust governance mechanism">
+      <defs><marker id="trustArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#e2b34b"/></marker></defs>
+      <rect x="35" y="64" width="286" height="178" rx="28" fill="#102f50" stroke="#4f9bd8" stroke-width="3"/>
+      <text x="178" y="108" text-anchor="middle" class="label-strong">Public Benefit Corporation</text><text x="178" y="145" text-anchor="middle">responsible development</text><text x="178" y="175" text-anchor="middle">for humanity&rsquo;s long-term benefit</text><text x="178" y="216" text-anchor="middle" class="label-gold">MISSION ANCHOR</text>
+      <circle cx="600" cy="154" r="118" fill="#3f3216" stroke="#e2b34b" stroke-width="4"/><text x="600" y="96" text-anchor="middle" class="label-strong">LONG-TERM</text><text x="600" y="128" text-anchor="middle" class="label-strong">BENEFIT TRUST</text><text x="600" y="162" text-anchor="middle">independent trustees</text><text x="600" y="194" text-anchor="middle">special Class T stock</text><text x="600" y="228" text-anchor="middle" class="label-gold">GOVERNANCE POWER</text>
+      <rect x="879" y="64" width="286" height="178" rx="28" fill="#16372f" stroke="#64c3a3" stroke-width="3"/>
+      <text x="1022" y="108" text-anchor="middle" class="label-strong">Anthropic Board</text><text x="1022" y="145" text-anchor="middle">LTBT election power</text><text x="1022" y="175" text-anchor="middle">phases toward a majority</text><text x="1022" y="205" text-anchor="middle">shares risk + safety materials</text><text x="1022" y="232" text-anchor="middle" class="label-gold">CORPORATE CONTROL</text>
+      <line x1="321" y1="154" x2="466" y2="154" stroke="#4f9bd8" stroke-width="4" marker-end="url(#trustArrow)"/><text x="394" y="130" text-anchor="middle">mission mandate</text>
+      <line x1="718" y1="132" x2="871" y2="132" stroke="#e2b34b" stroke-width="5" marker-end="url(#trustArrow)"/><text x="795" y="106" text-anchor="middle" class="label-gold">elect + remove</text>
+      <line x1="871" y1="197" x2="724" y2="197" stroke="#64c3a3" stroke-width="3" marker-end="url(#trustArrow)"/>
+      <rect x="35" y="304" width="548" height="138" rx="24" fill="#132f4d" stroke="#4f9bd8" stroke-width="2"/><text x="63" y="342" class="label-strong">What Fontaine brings</text><text x="63" y="376">National-security, Capitol Hill and geopolitical-risk judgment</text><text x="63" y="406">inside the body that advises leadership on AI benefits and risks.</text><text x="63" y="431" class="label-gold">A governance channel, not merely an external network.</text>
+      <rect x="617" y="304" width="548" height="138" rx="24" fill="#3a2025" stroke="#e06464" stroke-width="2"/><text x="645" y="342" class="label-strong">What this does not prove</text><text x="645" y="376">He is not a corporate director or grantmaking officer.</text><text x="645" y="406">No public evidence shows he controls proposal funding or tokens.</text><text x="645" y="431" fill="#f0abab">Influence and decision authority require confirmation.</text>
+    </svg>
+    <div class="source">Anthropic LTBT governance description, transparency hub and trustee announcements · current design may continue to evolve</div>
+  </section>
+
+  <section class="slide" data-sid="pilot" data-t="A bounded pilot can show the whole method" data-section="Demo">
+    <div class="eyebrow">Demonstration</div><h2>A bounded pilot can show the whole method</h2>
+    <p class="dek">The demo is not “classify everything.” It is a reproducible subset that makes both populated and empty political-issue segments visible.</p>
+    <div class="pipeline" style="grid-template-columns:repeat(4,1fr)">
+      <div class="pipe-step" data-frag="1"><div class="num">≈1k</div><b>Stratified subset</b><span>Across years, native families, formats and size regimes.</span></div>
+      <div class="pipe-step" data-frag="2"><div class="num">498</div><b>Taxon coding</b><span>LLM-with-context, evidence spans, calibrated abstention.</span></div>
+      <div class="pipe-step" data-frag="3"><div class="num">7D</div><b>Interactive view</b><span>Sunburst and cross-filtered slices by year and document family.</span></div>
+      <div class="pipe-step" data-frag="4"><div class="num">∅</div><b>Empty cells matter</b><span>Unraised combinations become findings, not missing chart furniture.</span></div>
+    </div>
+    <div class="source">Pilot size remains a proposal parameter; no source document has yet been classified</div>
+  </section>
+
+  <section class="slide" data-sid="ask" data-t="The ask is money and tokens" data-section="Ask">
+    <div class="eyebrow">Partnership proposition</div><h2>The ask is money <span style="color:var(--gold)">and</span> tokens</h2>
+    <div class="ask"><div class="ask-card money"><div class="symbol">$</div><h3>Research funding</h3><p>Supports corpus engineering, political-signal construction, human review, and a staffer-facing demonstration.</p></div><div class="ask-card tokens"><div class="symbol">◈</div><h3>Frontier-model tokens</h3><p>The higher-leverage contribution. Classification quality and scale are constrained by inference cost, not by the analytical method.</p></div></div>
+    <div class="source">Opportunity remains preliminary · no amount or token allocation has been proposed to Anthropic</div>
+  </section>
+
+  <section class="slide" data-sid="boundaries" data-t="What is established and what is not" data-section="Close">
+    <div class="eyebrow">Brutally frank boundary</div><h2>What is established and what is not</h2>
+    <div class="boundary-grid"><div class="boundary"><b>Contact role</b><p>Richard Fontaine is confirmed. He is an Anthropic LTBT trustee and public-sector council member, not a corporate board director.</p></div><div class="boundary"><b>Taxonomy application</b><p>DUAL GO covers the taxonomy&rsquo;s usefulness. It has not been applied to one budget document.</p></div><div class="boundary"><b>Political labels</b><p>The congressional/news signal is designed, not harvested and validated. ParlaMint is generative, not a US ground truth.</p></div><div class="boundary"><b>Government-relations risk</b><p>A donor-facing demo can drift into lobbying or a recurring product claim. The boundary needs explicit wording.</p></div><div class="boundary"><b>Next analytical step</b><p>Structural metadata is complete. Next, run a stratified issue-coding pilot with evidence spans against the 498-taxon lens.</p></div><div class="boundary"><b>Next relationship step</b><p>Confirm the grant vehicle, decision authority, timetable and whether money plus tokens is a realistic ask.</p></div></div>
+    <div class="source">Current state · 1 September 2026</div>
+  </section>
+</main>
+
+<script src="meta.js"></script>
+<script src="metadata.js"></script>
+<script>
+const META=window.BRIEFING_META;
+const EXTRACTED=window.BRIEFING_EXTRACTED;
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0,frag=0;
+function q(sel,root=document){return root.querySelector(sel)}
+function qa(sel,root=document){return [...root.querySelectorAll(sel)]}
+function setFrags(i,n){frag=n;qa('[data-frag]',slides[i]).forEach(el=>{const step=Number(el.dataset.frag);el.classList.toggle('shown',el.classList.contains('frag-note')?step===n:step<=n)})}
+function go(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,j)=>s.classList.toggle('on',j===cur));setFrags(cur,0);q('#counter').textContent=`${cur+1} / ${slides.length}`;q('#sect').textContent=slides[cur].dataset.section;q('#progress').style.width=`${(cur+1)/slides.length*100}%`;location.hash=slides[cur].dataset.sid}
+function next(){const n=qa('[data-frag]',slides[cur]).length;if(frag<n)setFrags(cur,frag+1);else go(cur+1)}
+function prev(){if(frag>0)setFrags(cur,frag-1);else go(cur-1)}
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}if(e.key==='Home')go(0);if(e.key==='End')go(slides.length-1);if(e.key.toLowerCase()==='f')document.documentElement.requestFullscreen?.()});
+addEventListener('click',e=>{if(e.clientX>innerWidth*.55)next();else prev()});
+window.go=go;window.setFrags=setFrags;
+
+function s(tag,attrs={},text=''){const el=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));if(text)el.textContent=text;return el}
+function line(svg,x1,y1,x2,y2,cls='grid'){svg.append(s('line',{x1,y1,x2,y2,class:cls}))}
+function text(svg,x,y,value,attrs={}){svg.append(s('text',{x,y,...attrs},value))}
+
+function drawYears(){const svg=q('#yearChart'),rows=META.by_year,W=1120,H=405,x0=55,y0=32,max=Math.max(...rows.map(r=>r.files)),bw=W/rows.length*.68;[0,25,50,75,100].forEach(v=>{const y=y0+H-v/max*H;line(svg,x0,y,x0+W,y);text(svg,44,y+5,v,{'text-anchor':'end'})});rows.forEach((r,i)=>{const x=x0+i*W/rows.length+(W/rows.length-bw)/2,hd=r.direct/max*H,he=r.extracted/max*H;svg.append(s('rect',{x,y:y0+H-hd,width:bw,height:hd,rx:3,class:'direct'}));svg.append(s('rect',{x,y:y0+H-hd-he,width:bw,height:he,rx:3,class:'extract'}));text(svg,x+bw/2,478,String(r.year).slice(2),{'text-anchor':'middle',transform:`rotate(-55 ${x+bw/2} 478)`});if([2000,2013,2024].includes(r.year)){text(svg,x+bw/2,y0+H-hd-he-10,r.files,{'text-anchor':'middle',class:'label-gold'});}});line(svg,x0,y0+H,x0+W,y0+H,'axis')}
+function drawFormats(){const svg=q('#formatChart'),rows=META.by_year,W=1110,H=360,x0=65,y0=45,max=Math.max(...rows.map(r=>r.direct_pdf+r.direct_xls+r.direct_xlsx)),bw=W/rows.length*.7;[0,20,40,60].forEach(v=>{const y=y0+H-v/max*H;line(svg,x0,y,x0+W,y);text(svg,54,y+5,v,{'text-anchor':'end'})});rows.forEach((r,i)=>{const x=x0+i*W/rows.length+(W/rows.length-bw)/2;let y=y0+H;[['direct_pdf','#4f9bd8'],['direct_xls','#ef7d55'],['direct_xlsx','#64c3a3']].forEach(([k,c])=>{const h=r[k]/max*H;y-=h;svg.append(s('rect',{x,y,width:bw,height:h,fill:c,rx:2}))});text(svg,x+bw/2,448,String(r.year).slice(2),{'text-anchor':'middle'});if(r.year===2012){line(svg,x-4,y0,x-4,y0+H,'axis');text(svg,x+8,y0+18,'FY2012',{'class':'label-gold'})}});svg.append(s('rect',{x:70,y:474,width:18,height:18,fill:'#4f9bd8'}));text(svg,98,489,'PDF');svg.append(s('rect',{x:185,y:474,width:18,height:18,fill:'#ef7d55'}));text(svg,213,489,'XLS');svg.append(s('rect',{x:300,y:474,width:18,height:18,fill:'#64c3a3'}));text(svg,328,489,'XLSX');text(svg,560,489,'Green Book extraction band: FY2013–FY2025 · 506 workbooks',{'class':'label-gold'})}
+function drawFamilies(){const host=q('#familyList'),rows=META.families.filter(r=>!['Green Book historical tables','System metadata'].includes(r.name)).slice(0,12),max=rows[0].count,colors=['#e2b34b','#4f9bd8','#64c3a3','#ef7d55'];rows.forEach((r,i)=>{const d=document.createElement('div');d.className='family-item';d.style.setProperty('--w',`${r.count/max*100}%`);d.style.setProperty('--c',colors[i%colors.length]);d.innerHTML=`<b>${r.count}</b><span>${r.name}</span>`;host.append(d)});const conf=q('#confidence'),sum=META.headline.raw_files;META.category_confidence.forEach((r,i)=>{const d=document.createElement('div');d.className='conf-row';d.innerHTML=`<span>${r.name.replace('explicit series code','series code').replace('filename keyword','keyword')}</span><div class="conf-track"><div class="conf-fill" style="width:${r.count/sum*100}%"></div></div><b>${r.count}</b>`;conf.append(d)})}
+function drawDuplicates(){const host=q('#dupCards');META.duplicate_groups.forEach(g=>{const o=g.paths.some(p=>/o1/i.test(p)),rf=g.paths.some(p=>/rf1/i.test(p));const d=document.createElement('div');d.className='dup-pair '+(o&&rf?'':'anomaly');d.innerHTML=`<b>FY${g.years[0]}</b><br><span>${o&&rf?'O-1 = RF-1':'M-1 = O-1'}</span>`;host.append(d)})}
+function drawSize(){const svg=q('#sizeChart'),rows=META.by_year,W=1100,H=360,x0=65,y0=42,maxB=Math.max(...rows.map(r=>r.bytes)),maxN=Math.max(...rows.map(r=>r.files)),bw=W/rows.length*.67,pts=[];[0,25,50,75].forEach(v=>{const y=y0+H-(v*1024*1024)/maxB*H;line(svg,x0,y,x0+W,y);text(svg,54,y+5,v,{'text-anchor':'end'})});rows.forEach((r,i)=>{const x=x0+i*W/rows.length+(W/rows.length-bw)/2,h=r.bytes/maxB*H;svg.append(s('rect',{x,y:y0+H-h,width:bw,height:h,fill:'#4f9bd8',opacity:.7,rx:3}));pts.push([x+bw/2,y0+H-r.files/maxN*H]);text(svg,x+bw/2,448,String(r.year).slice(2),{'text-anchor':'middle'})});svg.append(s('path',{d:pts.map((p,i)=>(i?'L':'M')+p.join(' ')).join(' '),class:'line'}));pts.forEach((p,i)=>{if([2000,2024,2027].includes(rows[i].year))svg.append(s('circle',{cx:p[0],cy:p[1],r:7,class:'dot'}))});text(svg,70,25,'MiB stored');text(svg,1080,25,'orange line = N files',{'text-anchor':'end',class:'label-gold'})}
+function drawTax(){const svg=q('#taxChart'),rows=META.taxonomy.by_hltp,total=META.taxonomy.taxa,cx=310,cy=310,R=230,r=125,colors=['#e2b34b','#4f9bd8','#64c3a3','#ef7d55','#8e7cc3','#d86f9b','#7fb0c9'];let a=-Math.PI/2;function pt(rad,ang){return[cx+rad*Math.cos(ang),cy+rad*Math.sin(ang)]}rows.forEach((row,i)=>{const b=a+row.taxa/total*Math.PI*2,p1=pt(R,a),p2=pt(R,b),p3=pt(r,b),p4=pt(r,a),large=b-a>Math.PI?1:0;const d=`M${p1} A${R} ${R} 0 ${large} 1 ${p2} L${p3} A${r} ${r} 0 ${large} 0 ${p4} Z`;svg.append(s('path',{d,fill:colors[i],stroke:'#07172d','stroke-width':4}));const mid=(a+b)/2,lp=pt((R+r)/2,mid);text(svg,lp[0],lp[1],row.taxa,{'text-anchor':'middle','dominant-baseline':'middle',class:'label-strong'});const op=pt(R+45,mid);text(svg,op[0],op[1],row.name.replace('Nature Of Concern','Nature of concern'),{'text-anchor':Math.cos(mid)>0?'start':'end','dominant-baseline':'middle'});a=b});svg.append(s('circle',{cx,cy,r:95,fill:'#0b203b',stroke:'#f4f7fa','stroke-width':2}));text(svg,cx,cy-8,'7 dimensions',{'text-anchor':'middle',class:'label-strong'});text(svg,cx,cy+25,'498 taxa',{'text-anchor':'middle',class:'label-gold'})}
+function barRows(host,entries,klass){const max=Math.max(...entries.map(([,v])=>v),1);entries.forEach(([name,count])=>{const d=document.createElement('div');d.className=klass+'-row';d.innerHTML=`<span>${name}</span><div class="${klass}-track"><div class="${klass}-fill" style="width:${count/max*100}%"></div></div><b>${count.toLocaleString()}</b>`;host.append(d)})}
+function drawMetadata(){q('#metaParsed').textContent=EXTRACTED.ok.toLocaleString();q('#metaParseNote').textContent=EXTRACTED.errors?`${EXTRACTED.errors} terminal parse errors`:'zero terminal parse errors';q('#metaPages').textContent=EXTRACTED.pdf_pages_total.toLocaleString();q('#metaSheets').textContent=EXTRACTED.workbook_sheets_total.toLocaleString();const labels={document_title:'document titles',internal_year_min:'internal year spans',service_components:'service/component signals',content_topics:'content-topic signals'};const coverage=Object.entries(labels).map(([key,label])=>[label,EXTRACTED.coverage[key]]);barRows(q('#metadataCoverage'),coverage,'coverage');barRows(q('#metadataTopics'),Object.entries(EXTRACTED.topic_counts).slice(0,6),'signal');barRows(q('#metadataComponents'),Object.entries(EXTRACTED.component_counts).slice(0,5),'signal');const chips=[...Object.entries(EXTRACTED.accounting_counts),...Object.entries(EXTRACTED.price_basis_counts)];chips.forEach(([name,count])=>{const d=document.createElement('span');d.className='metadata-chip';d.innerHTML=`${name} <b>${count.toLocaleString()}</b>`;q('#metadataAccounting').append(d)})}
+function init(){q('.year-ribbon').innerHTML='<span></span>'.repeat(30);q('.sheet-cloud').innerHTML='<i></i>'.repeat(25);qa('[data-metric]').forEach(el=>el.textContent=META.headline[el.dataset.metric].toLocaleString());drawYears();drawFormats();drawFamilies();drawMetadata();drawDuplicates();drawSize();drawTax();const target=location.hash.slice(1),i=slides.findIndex(s=>s.dataset.sid===target);go(i>=0?i:0)}
+init();
+</script>
+</body>
+</html>
